@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useApp, currencies } from '../context/AppContext';
-import { ShoppingBag, User, Zap, Menu, X, LogOut, ChevronDown, Heart, Package, Palette, Scale, Bot, DollarSign } from 'lucide-react';
+import { ShoppingBag, User, Zap, Menu, X, LogOut, ChevronDown, Heart, Package, Palette, Scale, Bot, DollarSign, Lock } from 'lucide-react';
 
 export const Navbar = () => {
   const { 
@@ -18,11 +18,14 @@ export const Navbar = () => {
     toggleCyberBot
   } = useApp();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
+
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const navItems = [
     { path: '/', label: 'Home' },
@@ -37,6 +40,55 @@ export const Navbar = () => {
     { key: 'amber', label: 'Solar Amber', color: '#FFB800' }
   ];
 
+  // If user is NOT logged in or currently on /login or /register page, show minimal Auth Navbar
+  if (!user || isAuthPage) {
+    return (
+      <header className="sticky top-0 z-40 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#262626] transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          
+          {/* Brand Logo */}
+          <Link 
+            to="/"
+            className="flex items-center gap-3 focus:outline-none group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-[#BCFF4E] flex items-center justify-center text-[#0A0A0A] shadow-[0_0_15px_rgba(188,255,78,0.3)] group-hover:scale-105 transition-transform duration-200">
+              <Zap className="w-6 h-6 fill-[#0A0A0A] stroke-[#0A0A0A]" />
+            </div>
+            <span className="font-headline text-2xl font-bold tracking-tight text-white group-hover:text-[#BCFF4E] transition-colors">
+              SkyMart
+            </span>
+          </Link>
+
+          {/* Right minimal auth links */}
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-geist text-gray-400 hidden sm:inline-flex items-center gap-1.5 bg-[#1A1A1A] border border-[#262626] px-3 py-1.5 rounded-full">
+              <Lock className="w-3.5 h-3.5 text-[#BCFF4E]" />
+              Secure Gateway
+            </span>
+
+            {location.pathname === '/register' ? (
+              <button
+                onClick={() => navigate('/login')}
+                className="px-4 py-2 bg-[#BCFF4E] text-[#0A0A0A] font-bold text-xs font-geist rounded-full hover:brightness-110 shadow-[0_0_12px_rgba(188,255,78,0.2)]"
+              >
+                Sign In
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/register')}
+                className="px-4 py-2 bg-[#BCFF4E] text-[#0A0A0A] font-bold text-xs font-geist rounded-full hover:brightness-110 shadow-[0_0_12px_rgba(188,255,78,0.2)]"
+              >
+                Create Account
+              </button>
+            )}
+          </div>
+
+        </div>
+      </header>
+    );
+  }
+
+  // Full Protected Navbar for Logged-In Users
   return (
     <header className="sticky top-0 z-40 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#262626] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 relative flex items-center justify-between">
@@ -191,80 +243,70 @@ export const Navbar = () => {
           </button>
 
           {/* User Profile / Auth Avatar */}
-          {user ? (
-            <div className="relative shrink-0">
-              <button
-                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="w-9 h-9 rounded-full bg-[#1A1A1A] border border-[#262626] hover:border-[#BCFF4E] text-white flex items-center justify-center transition-all focus:outline-none"
-                title={`Signed in as ${user.name}`}
-              >
-                <div className="w-7 h-7 rounded-full bg-[#BCFF4E]/20 text-[#BCFF4E] font-geist font-bold text-xs flex items-center justify-center border border-[#BCFF4E]/40">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-              </button>
-
-              {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-[#1A1A1A] border border-[#262626] rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in duration-150">
-                  <div className="px-4 py-2 border-b border-[#262626]">
-                    <p className="text-xs text-gray-400">Signed in as</p>
-                    <p className="text-sm font-semibold text-white truncate">{user.name}</p>
-                    <p className="text-[11px] text-gray-400 truncate">{user.email}</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setUserDropdownOpen(false);
-                      navigate('/orders');
-                    }}
-                    className="w-full text-left px-4 py-2 text-xs font-geist text-gray-300 hover:bg-[#262626] flex items-center gap-2"
-                  >
-                    <Package className="w-4 h-4 text-[#BCFF4E]" />
-                    Order History & Tracking
-                  </button>
-                  <button
-                    onClick={() => {
-                      setUserDropdownOpen(false);
-                      navigate('/wishlist');
-                    }}
-                    className="w-full text-left px-4 py-2 text-xs font-geist text-gray-300 hover:bg-[#262626] flex items-center gap-2"
-                  >
-                    <Heart className="w-4 h-4 text-[#BCFF4E]" />
-                    Wishlist ({wishlist.length})
-                  </button>
-                  {compareList.length > 0 && (
-                    <button
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        navigate('/compare');
-                      }}
-                      className="w-full text-left px-4 py-2 text-xs font-geist text-gray-300 hover:bg-[#262626] flex items-center gap-2"
-                    >
-                      <Scale className="w-4 h-4 text-[#BCFF4E]" />
-                      Comparison ({compareList.length})
-                    </button>
-                  )}
-                  <button
-                    onClick={() => {
-                      setUserDropdownOpen(false);
-                      logout();
-                      navigate('/login');
-                    }}
-                    className="w-full text-left px-4 py-2 text-xs font-geist text-red-400 hover:bg-[#262626] flex items-center gap-2 transition-colors border-t border-[#262626] mt-1 pt-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
+          <div className="relative shrink-0">
             <button
-              onClick={() => navigate('/login')}
-              className="w-9 h-9 rounded-full bg-[#1A1A1A] border border-[#262626] hover:border-[#BCFF4E] text-white hover:text-[#BCFF4E] flex items-center justify-center transition-all focus:outline-none shrink-0"
-              aria-label="User Login"
+              onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+              className="w-9 h-9 rounded-full bg-[#1A1A1A] border border-[#262626] hover:border-[#BCFF4E] text-white flex items-center justify-center transition-all focus:outline-none"
+              title={`Signed in as ${user.name}`}
             >
-              <User className="w-4 h-4" />
+              <div className="w-7 h-7 rounded-full bg-[#BCFF4E]/20 text-[#BCFF4E] font-geist font-bold text-xs flex items-center justify-center border border-[#BCFF4E]/40">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
             </button>
-          )}
+
+            {userDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-[#1A1A1A] border border-[#262626] rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in duration-150">
+                <div className="px-4 py-2 border-b border-[#262626]">
+                  <p className="text-xs text-gray-400">Signed in as</p>
+                  <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+                  <p className="text-[11px] text-gray-400 truncate">{user.email}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setUserDropdownOpen(false);
+                    navigate('/orders');
+                  }}
+                  className="w-full text-left px-4 py-2 text-xs font-geist text-gray-300 hover:bg-[#262626] flex items-center gap-2"
+                >
+                  <Package className="w-4 h-4 text-[#BCFF4E]" />
+                  Order History & Tracking
+                </button>
+                <button
+                  onClick={() => {
+                    setUserDropdownOpen(false);
+                    navigate('/wishlist');
+                  }}
+                  className="w-full text-left px-4 py-2 text-xs font-geist text-gray-300 hover:bg-[#262626] flex items-center gap-2"
+                >
+                  <Heart className="w-4 h-4 text-[#BCFF4E]" />
+                  Wishlist ({wishlist.length})
+                </button>
+                {compareList.length > 0 && (
+                  <button
+                    onClick={() => {
+                      setUserDropdownOpen(false);
+                      navigate('/compare');
+                    }}
+                    className="w-full text-left px-4 py-2 text-xs font-geist text-gray-300 hover:bg-[#262626] flex items-center gap-2"
+                  >
+                    <Scale className="w-4 h-4 text-[#BCFF4E]" />
+                    Comparison ({compareList.length})
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setUserDropdownOpen(false);
+                    logout();
+                    navigate('/login');
+                  }}
+                  className="w-full text-left px-4 py-2 text-xs font-geist text-red-400 hover:bg-[#262626] flex items-center gap-2 transition-colors border-t border-[#262626] mt-1 pt-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Mobile Menu Toggle */}
           <button

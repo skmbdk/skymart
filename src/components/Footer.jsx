@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { 
   Zap, 
@@ -17,9 +17,15 @@ import {
 
 export const Footer = () => {
   const navigate = useNavigate();
-  const { toggleCart, toggleCyberBot, openCheckout, wishlist } = useApp();
+  const location = useLocation();
+  const { user, toggleCart, toggleCyberBot, openCheckout, wishlist } = useApp();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
+  // Hide footer completely when unauthenticated or on login/register pages
+  if (!user || isAuthPage) return null;
 
   const handleSubscribe = (e) => {
     e.preventDefault();

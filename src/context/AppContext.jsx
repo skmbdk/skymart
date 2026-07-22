@@ -12,10 +12,10 @@ export const currencies = {
 };
 
 export const AppProvider = ({ children }) => {
-  // Authentication State
+  // Authentication State (Default to null if unauthenticated)
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('skymart_user');
-    return saved ? JSON.parse(saved) : { name: 'Demo User', email: 'user@skymart.com' };
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [usersList, setUsersList] = useState(() => {
@@ -93,7 +93,11 @@ export const AppProvider = ({ children }) => {
 
   // Sync to localStorage
   useEffect(() => {
-    localStorage.setItem('skymart_user', JSON.stringify(user));
+    if (user) {
+      localStorage.setItem('skymart_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('skymart_user');
+    }
   }, [user]);
 
   useEffect(() => {
