@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 import { Zap, Cpu, ShieldCheck, Truck, ChevronDown, ArrowRight } from 'lucide-react';
 
 export const AboutPage = () => {
-  const { navigateTo } = useApp();
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(0);
 
   const faqs = [
@@ -26,7 +26,7 @@ export const AboutPage = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16 font-body">
       
       {/* Brand Hero */}
       <div className="text-center space-y-6 max-w-3xl mx-auto">
@@ -112,8 +112,8 @@ export const AboutPage = () => {
           Ready to experience the future of retail?
         </h2>
         <button
-          onClick={() => navigateTo('shop')}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-[#BCFF4E] text-[#0A0A0A] font-headline font-bold text-base rounded-2xl hover:brightness-110 transition-all shadow-[0_0_20px_rgba(188,255,78,0.3)]"
+          onClick={() => navigate('/shop')}
+          className="inline-flex items-center gap-2 px-8 py-4 bg-[#BCFF4E] text-[#0A0A0A] font-headline font-bold text-base rounded-2xl hover:brightness-110 transition-all shadow-[0_0_20px_rgba(188,255,78,0.3)] active:scale-95"
         >
           Explore Catalog Now
           <ArrowRight className="w-5 h-5 stroke-[2.5]" />
