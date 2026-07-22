@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  --color-neon: #BCFF4E;
+  --color-neon-dim: #99d928;
+  --color-neon-glow: rgba(188, 255, 78, 0.25);
+}
+
+/* Dynamic Cyber Accent Themes */
+[data-theme="crimson"] {
+  --color-neon: #FF3366;
+  --color-neon-dim: #cc0033;
+  --color-neon-glow: rgba(255, 51, 102, 0.25);
+}
+
+[data-theme="emerald"] {
+  --color-neon: #00FF9D;
+  --color-neon-dim: #00cc7d;
+  --color-neon-glow: rgba(0, 255, 157, 0.25);
+}
+
+[data-theme="amber"] {
+  --color-neon: #FFB800;
+  --color-neon-dim: #cc9300;
+  --color-neon-glow: rgba(255, 184, 0, 0.25);
+}
+
+[data-theme="lime"] {
+  --color-neon: #BCFF4E;
+  --color-neon-dim: #99d928;
+  --color-neon-glow: rgba(188, 255, 78, 0.25);
+}
+
+/* Global Dynamic Accent Mappings for Live Theme Switcher */
+.text-\[\#BCFF4E\] { color: var(--color-neon) !important; }
+.bg-\[\#BCFF4E\] { background-color: var(--color-neon) !important; }
+.border-\[\#BCFF4E\] { border-color: var(--color-neon) !important; }
+.stroke-\[\#BCFF4E\] { stroke: var(--color-neon) !important; }
+.fill-\[\#BCFF4E\] { fill: var(--color-neon) !important; }
+
+@theme {
+  --color-neon: var(--color-neon, #BCFF4E);
+  --color-neon-dim: var(--color-neon-dim, #99d928);
+  --color-neon-glow: var(--color-neon-glow, rgba(188, 255, 78, 0.25));
+  
+  --color-surface-base: #0A0A0A;
+  --color-surface-low: #1A1A1A;
+  --color-surface-mid: #201f1f;
+  --color-surface-high: #262626;
+  --color-surface-highest: #353534;
+  
+  --font-headline: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-geist: 'Geist', monospace, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #0A0A0A;
+    color: #e5e2e1;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Cyber glow utilities */
+.neon-glow {
+  box-shadow: 0 0 20px var(--color-neon-glow);
+}
+
+.neon-glow-lg {
+  box-shadow: 0 0 35px var(--color-neon-glow);
+}
+
+.border-neon-glow {
+  border-color: var(--color-neon);
+  box-shadow: 0 0 15px var(--color-neon-glow);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon);
+}
