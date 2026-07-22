@@ -1,6 +1,6 @@
 # ⚡ SkyMart — Cyber-Minimalist E-Commerce Platform
 
-![SkyMart Header](https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop&q=80)
+![SkyMart Header](./skymart-header.png)
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
