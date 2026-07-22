@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { products, categories } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
-import { FeaturedProductCard } from '../components/FeaturedProductCard';
 import { Search, ArrowUpDown } from 'lucide-react';
 
 export const ShopPage = () => {
@@ -74,10 +73,6 @@ export const ShopPage = () => {
     });
   }, [selectedCategory, searchQuery, sortBy]);
 
-  // Featured product (spotlight)
-  const heroFeaturedProduct = products.find(p => p.id === 'prod-1') || products[0];
-  const shouldShowFeaturedCard = selectedCategory === 'all' && searchQuery === '';
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-body">
       
@@ -139,7 +134,7 @@ export const ShopPage = () => {
 
         </div>
 
-        {/* Category Pills Bar (Numbers Removed!) */}
+        {/* Category Pills Bar */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
@@ -161,7 +156,7 @@ export const ShopPage = () => {
 
       </div>
 
-      {/* Main Product Display Layout */}
+      {/* Main Product Display Grid */}
       {filteredProducts.length === 0 ? (
         <div className="bg-[#1A1A1A] border border-[#262626] rounded-2xl p-12 text-center my-12 space-y-4">
           <div className="w-16 h-16 rounded-full bg-[#262626] flex items-center justify-center text-gray-500 mx-auto">
@@ -182,20 +177,10 @@ export const ShopPage = () => {
           </button>
         </div>
       ) : (
-        <div className="space-y-8">
-          {/* Hero Spotlight Card on Default Catalog View */}
-          {shouldShowFeaturedCard && (
-            <div className="mb-8">
-              <FeaturedProductCard product={heroFeaturedProduct} />
-            </div>
-          )}
-
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4 gap-6 pt-2">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       )}
 
