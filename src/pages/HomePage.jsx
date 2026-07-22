@@ -56,7 +56,7 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="space-y-16 pb-16">
+    <div className="space-y-16 pb-16 font-body">
       
       {/* 1. Live Flash Sale Countdown Banner */}
       <FlashSaleBanner />
@@ -117,7 +117,7 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* 3. Shop by Category Grid (Matching Screenshot 2) */}
+      {/* 3. Shop by Category Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex items-center justify-between">
           <div>
@@ -136,7 +136,7 @@ export const HomePage = () => {
           </button>
         </div>
 
-        {/* 8 Category Grid Cards */}
+        {/* 8 Category Grid Cards (Clean Labels without Numbers) */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {homeCategories.map((cat) => (
             <div
@@ -152,7 +152,7 @@ export const HomePage = () => {
                   {cat.name}
                 </h3>
                 <span className="font-geist text-xs text-gray-400 mt-1 block">
-                  {cat.count}
+                  Explore Collection
                 </span>
               </div>
             </div>

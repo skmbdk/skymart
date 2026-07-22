@@ -79,22 +79,19 @@ export const ShopPage = () => {
   const shouldShowFeaturedCard = selectedCategory === 'all' && searchQuery === '';
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-body">
       
-      {/* Title & Subtitle (Matching Screenshot 1) */}
+      {/* Title & Subtitle */}
       <div className="text-center space-y-2">
         <h1 className="font-headline font-extrabold text-4xl sm:text-5xl text-white tracking-tight">
           {selectedCategory === 'all' ? 'All Products' : `${categories.find(c => c.id === selectedCategory)?.name || 'Filtered'} Products`}
         </h1>
         <p className="font-geist text-sm sm:text-base font-semibold text-[#BCFF4E]">
-          {selectedCategory === 'all' && searchQuery === ''
-            ? `Showing 1-${filteredProducts.length} of ${products.length} results`
-            : `Showing ${filteredProducts.length} of ${products.length} results`
-          }
+          Curated Cyber Hardware & Modern Lifestyle Essentials
         </p>
       </div>
 
-      {/* Search Input Bar & Category Pills (Matching Screenshot 1) */}
+      {/* Search Input Bar & Category Pills */}
       <div className="space-y-6">
         
         {/* Top Controls Row: Search Input & Sort Selector */}
@@ -142,7 +139,7 @@ export const ShopPage = () => {
 
         </div>
 
-        {/* Category Pills Bar (Matching Screenshot 1) */}
+        {/* Category Pills Bar (Numbers Removed!) */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
@@ -150,13 +147,13 @@ export const ShopPage = () => {
               <button
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.id)}
-                className={`px-5 py-2 rounded-full font-geist text-xs font-bold transition-all shrink-0 focus:outline-none ${
+                className={`px-5 py-2.5 rounded-full font-geist text-xs font-bold transition-all shrink-0 focus:outline-none ${
                   isActive
                     ? 'bg-[#BCFF4E] text-[#0A0A0A] shadow-[0_0_15px_rgba(188,255,78,0.4)]'
                     : 'bg-[#1C1B1B] text-gray-300 hover:text-white hover:bg-[#262626] border border-[#262626]'
                 }`}
               >
-                {cat.name} ({cat.count})
+                {cat.name}
               </button>
             );
           })}
@@ -176,30 +173,29 @@ export const ShopPage = () => {
           </p>
           <button
             onClick={() => {
-              handleSearchChange({ target: { value: '' } });
-              handleCategorySelect('all');
+              setSelectedCategory('all');
+              setSearchQuery('');
             }}
-            className="px-6 py-2.5 bg-[#BCFF4E] text-[#0A0A0A] font-bold text-sm rounded-full"
+            className="px-6 py-2.5 bg-[#BCFF4E] text-[#0A0A0A] font-bold text-xs font-geist rounded-full"
           >
             Reset Filters
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          
-          {/* Row 1 Spotlight Card if on "All" tab (Matching Screenshot 1) */}
+        <div className="space-y-8">
+          {/* Hero Spotlight Card on Default Catalog View */}
           {shouldShowFeaturedCard && (
-            <div className="sm:col-span-1 lg:col-span-1">
+            <div className="mb-8">
               <FeaturedProductCard product={heroFeaturedProduct} />
             </div>
           )}
 
-          {/* Product Cards List */}
-          {filteredProducts
-            .filter(p => !shouldShowFeaturedCard || p.id !== heroFeaturedProduct.id)
-            .map((product) => (
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
         </div>
       )}
 
